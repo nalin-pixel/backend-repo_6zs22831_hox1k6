@@ -11,7 +11,7 @@ Model name is converted to lowercase for the collection name:
 - BlogPost -> "blogs" collection
 """
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, HttpUrl
 from typing import Optional
 
 # Example schemas (replace with your own):
@@ -37,6 +37,23 @@ class Product(BaseModel):
     price: float = Field(..., ge=0, description="Price in dollars")
     category: str = Field(..., description="Product category")
     in_stock: bool = Field(True, description="Whether product is in stock")
+
+# App-specific schemas
+
+class Asset(BaseModel):
+    """Image + prompt items shown in the dashboard grid.
+    Collection name: "asset"
+    """
+    title: str = Field(..., description="Display title for the image")
+    image_url: HttpUrl = Field(..., description="Public URL of the image")
+    prompt: str = Field(..., description="Text prompt associated with the image")
+    is_active: bool = Field(True, description="Whether this asset is visible")
+
+class AssetUpdate(BaseModel):
+    title: Optional[str] = None
+    image_url: Optional[HttpUrl] = None
+    prompt: Optional[str] = None
+    is_active: Optional[bool] = None
 
 # Add your own schemas here:
 # --------------------------------------------------
